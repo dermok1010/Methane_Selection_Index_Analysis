@@ -3,7 +3,8 @@
 # SELECTION RESPONSE COMPARISON OF METHANE TRAITS WITH MONTE CARLO UNCERTAINTY
 # Uses ASReml .pvc estimates (estimate followed by SE)
 # ============================================================
-asreml_data <- read.csv("/home/dermot.kelly/Dermot_analysis/Phd/Paper_3/genetic_analysis/P3_data.csv")
+setwd("/home/dermot.kelly/Dermot_analysis/Phd/Paper_3/")
+asreml_data <- read.csv("genetic_analysis/asreml_scripts/P3_data.csv")
 
 suppressPackageStartupMessages({
   library(Matrix)
@@ -643,7 +644,7 @@ print(summary_table)
 # Output 1: Monte Carlo uncertainty propagation details
 write.csv(
   summary_table,
-  file = "supplementary_monte_carlo_uncertainty.csv",
+  file = "selection_index_P3/outputs/supplementary_monte_carlo_uncertainty.csv",
   row.names = FALSE
 )
 
@@ -676,16 +677,9 @@ full_response_grid <- bind_rows(full_response_grid, special_rows)
 
 write.csv(
   full_response_grid,
-  file = "supplementary_full_index_responses.csv",
+  file = "selection_index_P3/outputs/supplementary_full_index_responses.csv",
   row.names = FALSE
 )
-
-write.csv(
-  full_response_grid,
-  file = "supplementary_full_index_responses.csv",
-  row.names = FALSE
-)
-
 cat("\nSupplementary files written:\n")
 cat(" - supplementary_monte_carlo_uncertainty.csv\n")
 cat(" - supplementary_full_index_responses.csv\n")
@@ -915,26 +909,9 @@ if(has_mc) {
 }
 
 # -----------------------------
-# 16.4 “Similar methane reduction” bands around ratio and residual
-# (Point estimates only; band statistics are descriptive summaries on lr)
+# 16.3 Excluded
 # -----------------------------
-ratio_ch4 <- ratio_point$ch4
-resid_ch4 <- resid_point$ch4
 
-tol_tight <- 0.02
-tol_wide  <- 0.05
-
-band_tbl <- bind_rows(
-  band_summary(lr, ratio_ch4, tol_tight, paste0("Near ratio CH4 (|Δ|<= ", tol_tight, ")")),
-  band_summary(lr, ratio_ch4, tol_wide,  paste0("Near ratio CH4 (|Δ|<= ", tol_wide,  ")")),
-  band_summary(lr, resid_ch4, tol_tight, paste0("Near residual CH4 (|Δ|<= ", tol_tight, ")")),
-  band_summary(lr, resid_ch4, tol_wide,  paste0("Near residual CH4 (|Δ|<= ", tol_wide,  ")"))
-)
-
-cat("\n=============================\n")
-cat("RANGES AT SIMILAR METHANE REDUCTION (within favourable quadrant)\n")
-cat("=============================\n")
-print(band_tbl)
 
 # -----------------------------
 # 16.5 Dominance checks (point-estimate geometry only)
