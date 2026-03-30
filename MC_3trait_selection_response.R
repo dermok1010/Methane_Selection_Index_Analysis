@@ -23,43 +23,42 @@ mu_X <- 17.90444
 mu_Y <- 21.96824
 
 # -----------------------------
-# 1) Point estimates of (co)variance components + SEs from your .pvc outputs
+# 1) Point estimates of (co)variance components + SEs from .pvc outputs
 # -----------------------------
 # ---- Bivariate: Metabolic_BW (trait1) vs ch4_g_day2_1v3 (trait2) ----
 # Additive
-VA_Y_hat  <- 1.37126   ; SE_VA_Y  <- 0.162279
-VA_X_hat  <- 3.00025   ; SE_VA_X  <- 0.259537
-rg_XY_hat <- 0.0702    ; SE_rg_XY <- 0.0767
+VA_Y_hat  <- 1.51857   ; SE_VA_Y  <- 0.164883    # Additive genetic variance: MBW (anchors G2 and G3 diagonal)
+VA_X_hat  <- 2.72527   ; SE_VA_X  <- 0.251641    # Additive genetic variance: CH4 (anchors G2 and G3 diagonal)
+rg_XY_hat <- -0.033    ; SE_rg_XY <- 0.0838      # Genetic correlation: MBW-CH4 (near-zero; weak genetic association)
 
 # Residual
-VE_Y_hat  <- 0.907759  ; SE_VE_Y  <- 0.158174E-01
-VE_X_hat  <- 10.7878   ; SE_VE_X  <- 0.172082
-re_XY_hat <- 0.2346    ; SE_re_XY <- 0.0115
+VE_Y_hat  <- 0.964220  ; SE_VE_Y  <- 0.168305E-01  # Residual variance: MBW
+VE_X_hat  <- 10.7364   ; SE_VE_X  <- 0.170771      # Residual variance: CH4
+re_XY_hat <- 0.2358    ; SE_re_XY <- 0.0115         # Residual correlation: MBW-CH4 (modest positive; larger than rg)
 
 # PE: ide(ANI_ID) shared across both traits
-VPE_XY_hat <- 2.34825  ; SE_VPE_XY <- 0.156550
+VPE_XY_hat <- 2.38080  ; SE_VPE_XY <- 0.157983     # Permanent environment variance: ide(ANI_ID), shared scalar across MBW and CH4
+# Inflates VP diagonal only; no PE covariance between traits
 
 # ---- Bivariate: Metabolic_BW (trait1) vs adg (trait2) ----
-VA_Y2_hat  <- 4.08216        ; SE_VA_Y2  <- 0.848505E-01
-VA_Z_from_Y_hat <- 0.146409E-02 ; SE_VA_Z_from_Y <- 0.152828E-03
-rg_YZ_hat  <- 0.5340         ; SE_rg_YZ  <- 0.0331
-
-VE_Y2_hat  <- 0.933471       ; SE_VE_Y2  <- 0.163824E-01
-VE_Z_from_Y_hat <- 0.135944E-03 ; SE_VE_Z_from_Y <- 0.524678E-05
-re_YZ_hat  <- 0.1102         ; SE_re_YZ  <- 0.0339
-
-VPE_YZ_hat <- 0.429091E-03   ; SE_VPE_YZ <- 0.132028E-03
+VA_Y2_hat  <- 4.29765        ; SE_VA_Y2  <- 0.890151E-01   # Additive genetic variance: MBW (this bivariate's estimate)
+VA_Z_from_Y_hat <- 0.194251E-02 ; SE_VA_Z_from_Y <- 0.194836E-03  # Additive genetic variance: ADG (from MBW-ADG bivariate)
+rg_YZ_hat  <- 0.6878         ; SE_rg_YZ  <- 0.0341         # Genetic correlation: MBW-ADG
+VE_Y2_hat  <- 0.994608       ; SE_VE_Y2  <- 0.174554E-01   # Residual variance: MBW (this bivariate's estimate)
+VE_Z_from_Y_hat <- 0.134158E-03 ; SE_VE_Z_from_Y <- 0.516191E-05  # Residual variance: ADG (from MBW-ADG bivariate)
+re_YZ_hat  <- 0.0830         ; SE_re_YZ  <- 0.0343         # Residual correlation: MBW-ADG
+VPE_YZ_hat <- 0.793797E-03   ; SE_VPE_YZ <- 0.167115E-03  # Permanent environment variance: ide(ANI_ID), MBW-ADG bivariate
 
 # ---- Bivariate: ch4_g_day2_1v3 (trait1) vs adg (trait2) ----
-VA_X2_hat  <- 4.80048        ; SE_VA_X2  <- 0.238592
-VA_Z_from_X_hat <- 0.131168E-02 ; SE_VA_Z_from_X <- 0.157654E-03
-rg_XZ_hat  <- 0.3142         ; SE_rg_XZ  <- 0.0445
+VA_X2_hat  <- 4.62718        ; SE_VA_X2  <- 0.230782       # Additive genetic variance: CH4 (this bivariate's estimate)
+VA_Z_from_X_hat <- 0.149254E-02 ; SE_VA_Z_from_X <- 0.205584E-03  # Additive genetic variance: ADG (from CH4-ADG bivariate; used in G3 assembly)
+rg_XZ_hat  <- 0.4104         ; SE_rg_XZ  <- 0.0486         # Genetic correlation: CH4-ADG (used in G3 assembly)
+VE_X2_hat  <- 10.9767        ; SE_VE_X2  <- 0.176163       # Residual variance: CH4 (this bivariate's estimate)
+VE_Z_from_X_hat <- 0.133262E-03 ; SE_VE_Z_from_X <- 0.510974E-05  # Residual variance: ADG (from CH4-ADG bivariate)
+re_XZ_hat  <- 0.0846         ; SE_re_XZ  <- 0.0300         # Residual correlation: CH4-ADG
+VPE_XZ_hat <- 0.817222E-03   ; SE_VPE_XZ <- 0.183645E-03  # Permanent environment variance: ide(ANI_ID), CH4-ADG bivariate (used in G3 assembly)
 
-VE_X2_hat  <- 11.0835        ; SE_VE_X2  <- 0.179200
-VE_Z_from_X_hat <- 0.134961E-03 ; SE_VE_Z_from_X <- 0.518084E-05
-re_XZ_hat  <- 0.0888         ; SE_re_XZ  <- 0.0298
 
-VPE_XZ_hat <- 0.395159E-03   ; SE_VPE_XZ <- 0.138167E-03
 
 # -----------------------------
 # 2) Helpers
@@ -1093,6 +1092,7 @@ suppressPackageStartupMessages({
   library(ggplot2)
   library(patchwork)
   library(scales)
+  library(ggtext)
 })
 
 # ── ASSUMED OBJECTS ALREADY IN ENVIRONMENT ───────────────────────────────────
@@ -1190,7 +1190,7 @@ p_frontier <- ggplot() +
     linejoin  = "round"
   ) +
   
-  # Layer 3: Ratio special point
+  # Layer 3: Ratio special point - marker
   geom_point(
     data   = ratio_point,
     aes(x = mbw, y = ch4),
@@ -1200,16 +1200,24 @@ p_frontier <- ggplot() +
     colour = "#1A1A2E",
     stroke = 1.5
   ) +
-  geom_text(
-    data     = ratio_point,
-    aes(x = mbw, y = ch4, label = "Ratio"),
-    nudge_y  = -0.028,
-    size     = 3.2,
-    colour   = "#1A1A2E",
-    fontface = "bold"
+  annotate(
+    "richtext",
+    x        = ratio_point$mbw + 0.02,
+    y        = ratio_point$ch4 - 0.05,
+    label    = paste0(
+      "<b>Ratio</b><br>",
+      "\u0394CH4: ", round(ratio_point$ch4, 2), " (\u00b1", round(get_mc("ratio_ch4")$mc_sd, 2), ")<br>",
+      "\u0394MBW: ", round(ratio_point$mbw, 2),  " (\u00b1", round(get_mc("ratio_mbw")$mc_sd, 2), ")<br>",
+      "\u0394ADG: ", round(special_adg$adg_response[1], 2), " (\u00b1", round(get_mc("ratio_adg")$mc_sd, 3), ")"
+    ),
+    size      = 3.3,
+    colour    = "#1A1A2E",
+    hjust     = 0,
+    fill      = NA,    # removes the default white box background
+    label.color = NA   # removes the default border
   ) +
   
-  # Layer 4: Residual special point
+  # Layer 4: Residual special point - marker
   geom_point(
     data   = resid_point %>% filter(mbw > 0, ch4 < 0),
     aes(x = mbw, y = ch4),
@@ -1219,13 +1227,21 @@ p_frontier <- ggplot() +
     colour = "#1A1A2E",
     stroke = 1.5
   ) +
-  geom_text(
-    data     = resid_point %>% filter(mbw > 0, ch4 < 0),
-    aes(x = mbw, y = ch4, label = "Residual"),
-    nudge_y  = -0.028,
-    size     = 3.2,
-    colour   = "#1A1A2E",
-    fontface = "bold"
+  annotate(
+    "richtext",
+    x        = resid_point$mbw + 0.02,
+    y        = resid_point$ch4 - 0.05,
+    label    = paste0(
+      "<b>Residual</b><br>",
+      "\u0394CH4: ", round(resid_point$ch4, 2), " (\u00b1", round(get_mc("resid_ch4")$mc_sd, 2), ")<br>",
+      "\u0394MBW: ", round(resid_point$mbw, 2),  " (\u00b1", round(get_mc("resid_mbw")$mc_sd, 2), ")<br>",
+      "\u0394ADG: ", round(special_adg$adg_response[2], 2), " (\u00b1", round(get_mc("resid_adg")$mc_sd, 3), ")"
+    ),
+    size      = 3.3,
+    colour    = "#1A1A2E",
+    hjust     = 0,
+    fill      = NA,
+    label.color = NA
   ) +
   
   # Reference lines
