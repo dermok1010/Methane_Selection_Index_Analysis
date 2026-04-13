@@ -13,6 +13,16 @@ suppressPackageStartupMessages({
   library(ggplot2)
 })
 
+packageVersion("Matrix")
+packageVersion("dplyr")
+packageVersion("tidyr")
+packageVersion("ggplot2")
+
+citation("Matrix")
+citation("dplyr")
+citation("tidyr")
+citation("ggplot2")
+
 # -----------------------------
 # 0) Names of traits + means for ratio Taylor
 # -----------------------------
@@ -969,35 +979,6 @@ cat("ADG range in favourable quadrant: [",
 cat("ADG at ratio:   ", signif(special_adg$adg_response[1], 4), "\n", sep="")
 cat("ADG at residual:", signif(special_adg$adg_response[2], 4), "\n", sep="")
 
-# -----------------------------
-# 16.7 Local sensitivity (optional; point-estimate only)
-# -----------------------------
-local_sensitivity <- function(df, target_ch4, tol_abs, label){
-  df_band <- df %>% filter(abs(ch4 - target_ch4) <= tol_abs)
-  if(nrow(df_band) < 10){
-    return(tibble(
-      label = label, n = nrow(df_band),
-      dADG_dCH4 = NA_real_, dADG_dMBW = NA_real_
-    ))
-  }
-  fit <- lm(adg ~ ch4 + mbw, data=df_band)
-  co <- coef(fit)
-  tibble(
-    label = label, n = nrow(df_band),
-    dADG_dCH4 = unname(co["ch4"]),
-    dADG_dMBW = unname(co["mbw"])
-  )
-}
-
-sens_tbl <- bind_rows(
-  local_sensitivity(lr, ratio_ch4, tol_wide, "Local around ratio (ADG ~ CH4 + MBW)"),
-  local_sensitivity(lr, resid_ch4, tol_wide, "Local around residual (ADG ~ CH4 + MBW)")
-)
-
-cat("\n=============================\n")
-cat("LOCAL SENSITIVITY (approx; within CH4 band)\n")
-cat("=============================\n")
-print(sens_tbl)
 
 # -----------------------------
 # 16.8 Compact summary table for Results (point estimates)
@@ -1185,13 +1166,13 @@ p_frontier <- ggplot() +
       "<b>Ratio</b><br>",
       "\u0394CH4: ", round(ratio_point$ch4, 2), " (\u00b1", round(get_mc("ratio_ch4")$mc_sd, 2), ")<br>",
       "\u0394MBW: ", round(ratio_point$mbw, 2),  " (\u00b1", round(get_mc("ratio_mbw")$mc_sd, 2), ")<br>",
-      "\u0394ADG: ", round(special_adg$adg_response[1], 2), " (\u00b1", round(get_mc("ratio_adg")$mc_sd, 3), ")"
+      "\u0394ADG: ", round(special_adg$adg_response[1], 2), " (\u00b1", round(get_mc("ratio_adg")$mc_sd * 1000, 2), ")"
     ),
     size      = 3.3,
     colour    = "#1A1A2E",
     hjust     = 0,
-    fill      = NA,    # removes the default white box background
-    label.color = NA   # removes the default border
+    fill      = NA,
+    label.color = NA
   ) +
   
   # Layer 4: Residual special point - marker
@@ -1212,7 +1193,7 @@ p_frontier <- ggplot() +
       "<b>Residual</b><br>",
       "\u0394CH4: ", round(resid_point$ch4, 2), " (\u00b1", round(get_mc("resid_ch4")$mc_sd, 2), ")<br>",
       "\u0394MBW: ", round(resid_point$mbw, 2),  " (\u00b1", round(get_mc("resid_mbw")$mc_sd, 2), ")<br>",
-      "\u0394ADG: ", round(special_adg$adg_response[2], 2), " (\u00b1", round(get_mc("resid_adg")$mc_sd, 3), ")"
+      "\u0394ADG: ", round(special_adg$adg_response[2], 2), " (\u00b1", round(get_mc("resid_adg")$mc_sd * 1000, 2), ")"
     ),
     size      = 3.3,
     colour    = "#1A1A2E",
@@ -1245,9 +1226,9 @@ p_frontier <- ggplot() +
 p_frontier
 
 ggsave(
-  "frontier_adg_v5.png",
+  "selection_index_P3/outputs/frontier_adg_v5.png",
   width  = 8,
-  height = 6.5,
+  height = 8,
   dpi    = 300,
   bg     = "white"
 )
