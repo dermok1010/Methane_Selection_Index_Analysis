@@ -70,6 +70,17 @@ re_XZ_hat  <- 0.0846         ; SE_re_XZ  <- 0.0300         # Residual correlatio
 VPE_XZ_hat <- 0.817222E-03   ; SE_VPE_XZ <- 0.183645E-03  # Permanent environment variance: ide(ANI_ID), CH4-ADG bivariate (used in G3 assembly)
 
 
+##########
+# Lambda
+##########
+lambda <- (sqrt(VA_X_hat) / mu_X) / (sqrt(VA_Y_hat) / mu_Y)
+lambda
+CVA_X <- sqrt(VA_X_hat) / mu_X
+CVA_Y <- sqrt(VA_Y_hat) / mu_Y
+
+CVA_X
+CVA_Y
+lambda
 
 # -----------------------------
 # 2) Helpers
@@ -1207,8 +1218,8 @@ p_frontier <- ggplot() +
   geom_vline(xintercept = 0, linetype = "dashed", colour = "grey60", linewidth = 0.35) +
   
   labs(
-    x = expression("Predicted response in metabolic body weight (kg)"),
-    y = expression("Predicted response in CH"[4]*" production (g day"^{-1}*")")
+    x = expression("Metabolic body weight (kg)"),
+    y = expression("CH"[4]*" production (g day"^{-1}*")")
   ) +
   
   theme_minimal(base_size = 11) +
@@ -1232,7 +1243,3 @@ ggsave(
   dpi    = 300,
   bg     = "white"
 )
-
-
-
-

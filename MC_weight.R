@@ -35,47 +35,54 @@ mu_Y <- 62.72
 # -----------------------------
 # 1) Point estimates of (co)variance components + SEs from .pvc outputs
 # -----------------------------
-# ---- Bivariate: liveweight (trait1) vs ch4_g_day2_1v3 (trait2) ----
+
+# ---- Bivariate: ch4_g_day2_1v3 (trait1) vs liveweight (trait2) ----
 # From bi_ch4_weight.pvc
-# Additive
-VA_Y_hat  <- 57.7836    ; SE_VA_Y  <- 1.35356      # Additive genetic variance: liveweight (Trait.ANI_ID row 7)
-VA_X_hat  <- 2.44586    ; SE_VA_X  <- 0.411761     # Additive genetic variance: CH4 (Trait.ANI_ID row 5)
+VA_X_hat  <- 2.44586    ; SE_VA_X  <- 0.411761     # Additive genetic variance: CH4
+VA_Y_hat  <- 57.7836    ; SE_VA_Y  <- 1.35356      # Additive genetic variance: liveweight
 rg_XY_hat <- 0.5018     ; SE_rg_XY <- 0.0289       # Genetic correlation: CH4-liveweight
 
-# Residual
-VE_Y_hat  <- 14.8424    ; SE_VE_Y  <- 0.260530     # Residual variance: liveweight (V 2 2)
-VE_X_hat  <- 10.6096    ; SE_VE_X  <- 0.172992     # Residual variance: CH4 (V 1 1)
+VE_X_hat  <- 10.6096    ; SE_VE_X  <- 0.172992     # Residual variance: CH4
+VE_Y_hat  <- 14.8424    ; SE_VE_Y  <- 0.260530     # Residual variance: liveweight
 re_XY_hat <- 0.2397     ; SE_re_XY <- 0.0114       # Residual correlation: CH4-liveweight
 
-# PE: ide(ANI_ID) shared across both traits — single scalar from row 1
-VPE_XY_hat <- 2.66683   ; SE_VPE_XY <- 0.423306    # Permanent environment variance: ide(ANI_ID), shared scalar across CH4 and liveweight
-# Inflates VP diagonal only; no PE covariance between traits
+VPE_XY_hat <- 2.66683   ; SE_VPE_XY <- 0.423306    # PE variance: ide(ANI_ID), CH4-liveweight bivariate
 
-# ---- Bivariate: liveweight (trait1) vs adg (trait2) ----
+# ---- Bivariate: liveweight (trait1) vs adg_g (trait2) ----
 # From bi_weight_adg.pvc
-VA_Y2_hat       <- 20.6151   ; SE_VA_Y2       <- 2.30336      # Additive genetic variance: liveweight (Trait.ANI_ID row 5)
-VA_Z_from_Y_hat <- 2766.01   ; SE_VA_Z_from_Y <- 87.3109      # Additive genetic variance: ADG (Trait.ANI_ID row 7)
-rg_YZ_hat       <- 0.7763    ; SE_rg_YZ       <- 0.0390       # Genetic correlation: liveweight-ADG
-VE_Y2_hat       <- 14.3670   ; SE_VE_Y2       <- 0.250035     # Residual variance: liveweight (V 1 1)
-VE_Z_from_Y_hat <- 135.083   ; SE_VE_Z_from_Y <- 5.21355      # Residual variance: ADG (V 2 2)
-re_YZ_hat       <- 0.0832    ; SE_re_YZ       <- 0.0348       # Residual correlation: liveweight-ADG
-VPE_YZ_hat      <- 35.3390   ; SE_VPE_YZ      <- 2.23806      # Permanent environment variance: ide(ANI_ID), liveweight-ADG bivariate
+VA_Y2_hat       <- 20.6151   ; SE_VA_Y2       <- 2.30336    # Additive genetic variance: liveweight
+VA_Z_from_Y_hat <- 2766.01   ; SE_VA_Z_from_Y <- 87.3109    # Additive genetic variance: ADG (g/day)
+rg_YZ_hat       <- 0.7763    ; SE_rg_YZ       <- 0.0390     # Genetic correlation: liveweight-ADG
 
-# ---- Bivariate: ch4_g_day2_1v3 (trait1) vs adg (trait2) ----
-# NOTE: No direct CH4-ADG bivariate is available in these .pvc files.
-# For G3 assembly we therefore take ADG variance from the liveweight-ADG
-# bivariate and approximate rg(CH4,ADG) via the chain:
-#   rg(CH4,ADG) ~ rg(CH4,LW) * rg(LW,ADG)
-# If a dedicated bi_ch4_adg.pvc becomes available, replace these values.
-VA_X2_hat       <- 2.44586   ; SE_VA_X2       <- 0.411761     # Additive genetic variance: CH4 (reuse from CH4-liveweight bivariate)
-VA_Z_from_X_hat <- 2766.01   ; SE_VA_Z_from_X <- 87.3109      # Additive genetic variance: ADG (reuse from liveweight-ADG bivariate)
-rg_XZ_hat       <- rg_XY_hat * rg_YZ_hat                      # rg(CH4,ADG) approximated as rg(CH4,LW) * rg(LW,ADG)
-SE_rg_XZ        <- sqrt(SE_rg_XY^2 + SE_rg_YZ^2)             # propagated SE (conservative)
-VE_X2_hat       <- 10.6096   ; SE_VE_X2       <- 0.172992     # Residual variance: CH4
-VE_Z_from_X_hat <- 135.083   ; SE_VE_Z_from_X <- 5.21355      # Residual variance: ADG
-re_XZ_hat       <- re_XY_hat * re_YZ_hat                      # re(CH4,ADG) approximated similarly
-SE_re_XZ        <- sqrt(SE_re_XY^2 + SE_re_YZ^2)             # propagated SE (conservative)
-VPE_XZ_hat      <- 2.66683   ; SE_VPE_XZ      <- 0.423306     # PE variance for CH4-ADG assembly (reuse CH4-LW PE)
+VE_Y2_hat       <- 14.3670   ; SE_VE_Y2       <- 0.250035   # Residual variance: liveweight
+VE_Z_from_Y_hat <- 135.083   ; SE_VE_Z_from_Y <- 5.21355    # Residual variance: ADG (g/day)
+re_YZ_hat       <- 0.0832    ; SE_re_YZ       <- 0.0348     # Residual correlation: liveweight-ADG
+
+VPE_YZ_hat      <- 35.3390   ; SE_VPE_YZ      <- 2.23806    # PE variance: ide(ANI_ID), liveweight-ADG bivariate
+
+# ---- Bivariate: ch4_g_day2_1v3 (trait1) vs adg_g (trait2) ----
+# From bi_ch4_adg_g.pvc — all direct estimates, no approximation
+VA_X2_hat       <- 2.85245   ; SE_VA_X2       <- 0.409247   # Additive genetic variance: CH4
+VA_Z_from_X_hat <- 2420.85   ; SE_VA_Z_from_X <- 72.8733    # Additive genetic variance: ADG (g/day)
+rg_XZ_hat       <- 0.4048    ; SE_rg_XZ       <- 0.0488     # Genetic correlation: CH4-ADG
+
+VE_X2_hat       <- 10.7507   ; SE_VE_X2       <- 0.177229   # Residual variance: CH4
+VE_Z_from_X_hat <- 134.237   ; SE_VE_Z_from_X <- 5.16098    # Residual variance: ADG (g/day)
+re_XZ_hat       <- 0.0785    ; SE_re_XZ       <- 0.0299     # Residual correlation: CH4-ADG
+
+VPE_XZ_hat      <- 1.96238   ; SE_VPE_XZ      <- 0.408829   # PE variance: ide(ANI_ID), CH4-ADG bivariate
+
+##########
+# Lambda
+##########
+lambda <- (sqrt(VA_X_hat) / mu_X) / (sqrt(VA_Y_hat) / mu_Y)
+lambda
+CVA_X <- sqrt(VA_X_hat) / mu_X
+CVA_Y <- sqrt(VA_Y_hat) / mu_Y
+
+CVA_X
+CVA_Y
+lambda
 
 # -----------------------------
 # 2) Helpers
@@ -443,6 +450,7 @@ cat("MONTE CARLO SUMMARY TABLE\n")
 cat("=============================\n")
 print(summary_table)
 
+
 # -----------------------------
 # 9b) Write supplementary outputs to file
 # -----------------------------
@@ -798,6 +806,19 @@ if(has_mc){
   cat("\n(MC summary_table not found -> skipping MC compact table.)\n")
 }
 
+
+# -----------------------------
+# Maximum CH4 reduction with no negative correlated responses in LW or ADG
+# -----------------------------
+
+best_ch4_mc <- get_mc("best_ch4_with_ADGge0")
+best_lw_mc  <- get_mc("best_lw_at_bestCH4_with_ADGge0")
+best_adg_mc <- get_mc("best_adg_at_bestCH4_with_ADGge0")
+
+cat("\nBest feasible point (MC uncertainty):\n")
+cat(sprintf("  CH4: %s\n", fmt_ci(best_ch4_mc$mean, best_ch4_mc$mc_sd, best_ch4_mc$lwr_2.5, best_ch4_mc$upr_97.5)))
+cat(sprintf("  LW:  %s\n", fmt_ci(best_lw_mc$mean,  best_lw_mc$mc_sd,  best_lw_mc$lwr_2.5,  best_lw_mc$upr_97.5)))
+cat(sprintf("  ADG: %s\n", fmt_ci(best_adg_mc$mean, best_adg_mc$mc_sd, best_adg_mc$lwr_2.5, best_adg_mc$upr_97.5)))
 # ============================================================
 # FRONTIER PLOT — HULL LINE COLOURED BY ADG RESPONSE
 # ============================================================
@@ -812,21 +833,15 @@ suppressPackageStartupMessages({
   library(ggtext)
 })
 
-lr <- resp_all_adg #%>% filter(lw > 0, ch4 < 0)
+lr <- resp_all_adg #%>% filter(lw > 0)
 
-# Colour the hull line by ADG
-hull_lr_adg <- hull_df %>%
-  #filter(lw > 0, ch4 < 0) %>%
-  mutate(
-    lw_r  = round(lw,  6),
-    ch4_r = round(ch4, 6)
-  ) %>%
-  left_join(
-    resp_all_adg %>%
-      mutate(lw_r = round(lw, 6), ch4_r = round(ch4, 6)) %>%
-      select(lw_r, ch4_r, adg),
-    by = c("lw_r", "ch4_r")
-  )
+hull_lr_adg <- resp_all_adg %>%
+  mutate(angle = atan2(ch4, lw),
+         r     = sqrt(lw^2 + ch4^2)) %>%
+  group_by(cut(angle, 720)) %>%          # 720 bins = 0.5° resolution
+  slice_max(r, n = 1) %>%
+  ungroup() %>%
+  arrange(angle)
 
 # Fill any floating point misses via nearest neighbour
 if (any(is.na(hull_lr_adg$adg))) {
@@ -909,15 +924,15 @@ p_frontier <- ggplot() +
   ) +
   annotate(
     "richtext",
-    x        = ratio_point$lw + 0.02,
-    y        = ratio_point$ch4 - 0.05,
+    x        = ratio_point$lw - 0.25,
+    y        = ratio_point$ch4 - 0.3,
     label    = paste0(
       "<b>Ratio</b><br>",
       "\u0394CH4: ", round(ratio_point$ch4, 2), " (\u00b1", round(get_mc("ratio_ch4")$mc_sd, 2), ")<br>",
       "\u0394LW: ",  round(ratio_point$lw,  2), " (\u00b1", round(get_mc("ratio_lw")$mc_sd,  2), ")<br>",
       "\u0394ADG: ", round(special_adg$adg_response[1], 2), " (\u00b1", round(get_mc("ratio_adg")$mc_sd, 2), ")"
     ),
-    size        = 3.3,
+    size        = 4.3,
     colour      = "#1A1A2E",
     hjust       = 0,
     fill        = NA,
@@ -936,15 +951,15 @@ p_frontier <- ggplot() +
   ) +
   annotate(
     "richtext",
-    x        = resid_point$lw + 0.02,
-    y        = resid_point$ch4 - 0.05,
+    x        = resid_point$lw + 0.3,
+    y        = resid_point$ch4 - 0.2,
     label    = paste0(
       "<b>Residual</b><br>",
       "\u0394CH4: ", round(resid_point$ch4, 2), " (\u00b1", round(get_mc("resid_ch4")$mc_sd, 2), ")<br>",
       "\u0394LW: ",  round(resid_point$lw,  2), " (\u00b1", round(get_mc("resid_lw")$mc_sd,  2), ")<br>",
       "\u0394ADG: ", round(special_adg$adg_response[2], 2), " (\u00b1", round(get_mc("resid_adg")$mc_sd, 2), ")"
     ),
-    size        = 3.3,
+    size        = 4.3,
     colour      = "#1A1A2E",
     hjust       = 0,
     fill        = NA,
@@ -956,11 +971,11 @@ p_frontier <- ggplot() +
   geom_vline(xintercept = 0, linetype = "dashed", colour = "grey60", linewidth = 0.35) +
   
   labs(
-    x = expression("Predicted response in liveweight (kg)"),
-    y = expression("Predicted response in CH"[4]*" production (g day"^{-1}*")")
+    x = expression("Live weight (kg)"),
+    y = expression("CH"[4]*" production (g day"^{-1}*")")
   ) +
   
-  theme_minimal(base_size = 11) +
+  theme_minimal(base_size = 13) +
   theme(
     plot.title       = element_blank(),
     plot.subtitle    = element_blank(),
@@ -970,14 +985,68 @@ p_frontier <- ggplot() +
     legend.key.width = unit(2.5, "cm"),
     panel.grid.minor = element_blank(),
     panel.grid.major = element_line(colour = "grey93")
-  )
+  ) +
+  coord_cartesian(xlim = c(0, NA))
 
 p_frontier
 
 ggsave(
   "selection_index_P3/outputs/frontier_adg_liveweight.png",
-  width  = 8,
+  width  = 12,
   height = 8,
-  dpi    = 300,
+  dpi    = 600,
+  bg     = "white"
+)
+
+
+land_use_frontier <- ggplot() +
+  
+  # Layer 1: Background cloud
+  geom_point(
+    data  = lr,
+    aes(x = lw, y = ch4, colour = adg),
+    alpha = 0.25,
+    size  = 1.4
+  ) +
+  adg_col_scale +
+  
+  # Layer 2: Hull line coloured by ADG
+  geom_path(
+    data      = hull_lr_adg,
+    aes(x = lw, y = ch4, colour = adg),
+    linewidth = 2.2,
+    lineend   = "round",
+    linejoin  = "round"
+  ) +
+  # Reference lines
+  geom_hline(yintercept = 0, linetype = "dashed", colour = "grey60", linewidth = 0.35) +
+  geom_vline(xintercept = 0, linetype = "dashed", colour = "grey60", linewidth = 0.35) +
+  
+  labs(
+    x = expression("Live weight (kg)"),
+    y = expression("CH"[4]*" production (g day"^{-1}*")")
+  ) +
+  
+  theme_minimal(base_size = 13) +
+  theme(
+    plot.title       = element_blank(),
+    plot.subtitle    = element_blank(),
+    axis.title       = element_text(size = 10, colour = "#1A1A2E"),
+    legend.position  = "bottom",
+    legend.title     = element_text(size = 9),
+    legend.key.width = unit(2.5, "cm"),
+    panel.grid.minor = element_blank(),
+    panel.grid.major = element_line(colour = "grey93")
+  ) +
+  coord_cartesian(xlim = c(-2, NA))
+
+land_use_frontier
+
+
+ggsave(
+  "selection_index_P3/outputs/land_use.png",
+  width  = 12,
+  height = 8,
+  dpi    = 600,
   bg     = "white"
 )
